@@ -1,0 +1,128 @@
+*{
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    background: #ccc;
+    font-family: sans-serif;
+
+}
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    flex-direction: column;
+}
+form {
+    width: 50vw;
+    min-height: 60vh;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+form > div {
+    display: flex;
+    flex-direction: column-reverse;
+    text-transform: capitalize;
+    margin-bottom: 10px;
+    width: 50%;
+}
+form > div > label {
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+form > div > input {
+    border: #000 1px solid;
+    transition: all 500ms ease-in-out;
+}
+form input {
+    padding: 10px;
+    font-size: 1.2em;
+    width: 100%;
+    border-radius: 5px;
+    outline: 0;
+    margin-bottom: 5px;
+  }
+  form input:focus,form input:hover{
+      border: #ccc 1px solid;
+  }
+input[type="submit"] {
+    border: #ccc 1px solid;
+    padding:10px; 
+    background: transparent;
+    width: 100%;
+    transition: all 500ms ease-in-out;
+} 
+input[type="submit"]:hover{
+    border: transparent 1px solid;
+    padding:10px; 
+    background: #ccc;
+    color: #fff;
+}
+input[type=number]::-webkit-inner-spin-button {    
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+form input::placeholder {
+    color: #ccc;
+    text-transform: capitalize;
+    padding-right: 10px;
+}
+
+.checkbox {
+    display: flex;
+}
+input[type=checkbox] {
+    display: none;
+}
+.checkbox label{ 
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+.checkbox label::before {
+    border-radius: 3px;
+    content: "";
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+    border: 1px solid #000;
+}
+.checkbox label::after {
+    position: absolute;
+    left: 4px;
+    top: 0;
+    content: "";
+    display: inline-block;
+    height: 6px;
+    width: 9px;
+}
+
+.checkbox input[type="checkbox"]:checked + label::after {
+    content: "\2713";
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: 1px solid #ccc;
+  -webkit-text-fill-color: #fff;
+  -webkit-box-shadow: 0 0 0px 1000px #ccc inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
