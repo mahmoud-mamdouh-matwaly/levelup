@@ -1,88 +1,71 @@
+var baseUrl = "https://levelup-assessment-backend-ddmwdsdlta.now.sh/api/";
+var formSchemaUrl =  baseUrl + "getFormSchema";
+var subissionUrl = baseUrl + "submission";
 
+call("Get", formSchemaUrl);
 
+function submition() {
+    var obj = {};
 
-var requestURL =  "https://levelup-assessment-backend-ddmwdsdlta.now.sh/api/getFormSchema";
-var request = new XMLHttpRequest();
-request.open('GET', requestURL);
-request.responseType = 'text';
-request.setRequestHeader("Content-Type", "application/json");
-request.onload = function () {
-    var indexText = request.response;
-    var indexValue = JSON.parse(indexText);
-    populateForm(indexValue);
+    var elements = formElement.querySelectorAll( "input" );
+    for( var i = 0; i < elements.length; ++i ) {
+        var element = elements[i];
+        var name = element.name;
+        var value = element.value;
+
+        var ckeckbox = document.getElementById("final_submission");
+            if(ckeckbox.checked){
+                ckeckbox.value = true;
+            }else {
+                ckeckbox.value = false;
+            }
+         
+        if( name ) {
+            obj[ name ] = value;
+            if( obj[ name ] === obj[ 'submit' ] ){
+                delete obj[ 'submit' ]
+            }
+        }
+    }
+
+    call("POST", subissionUrl, obj);
 }
 
-let formElements2 = [];
+function call(method, url, data = {}) {
+    var request = new XMLHttpRequest();
+    request.open(method, url, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    if(method === "Get") {
+        request.onload = function () {
+            var indexText = request.response;
+            var indexValue = JSON.parse(indexText);
+            populateForm(indexValue);
+        }
+    }
 
-function submit() {
-    var formValue = document.getElementById("name");
-
-    //  for (var i = 0; i < formValue.length; i++) {
-    //     formValue = formValue.value    
-    //  }   
-    console.log(formValue);
-} 
-submit();
+    data = JSON.stringify(data);
+    request.send(data);
+}
 
 function populateForm(jsonObj) {
     var mybody = document.getElementsByClassName("main")[0];
-    var formElement = document.createElement("form");
-        formElement.setAttribute('method', "get");
-        formElement.setAttribute('action', "");
-        formElement.setAttribute('id', "Form");
+    formElement = document.createElement("form");
+    formElement.setAttribute('action', "");
+    formElement.setAttribute('id', "Form");
 
-    for (var key in jsonObj) {
+    for (var key in jsonObj) {  
         
-        if(key !== 'submit') {
-            formElements2.push(key);
-        }
-        
-        var divElement = document.createElement("div");
-        divElement.setAttribute('class', jsonObj[key].type);
-
-        var inputElement = document.createElement("input");
-        inputElement.setAttribute('name', key);
-        inputElement.setAttribute('id', key);
-        inputElement.setAttribute('placeholder', 'your ' + key);
-        inputElement.setAttribute('type', jsonObj[key].type);
-        inputElement.setAttribute('value', jsonObj[key].value);
-        inputElement.setAttribute('value', jsonObj[key].value);
-
-        if (key === "submit") {
-            inputElement.setAttribute('value', jsonObj[key].value);
-            inputElement.setAttribute('onclick', submit());
-        }
-
-        var labelElement = document.createElement("label");
-            if (key === "secret" || key === "submit") {
-                labelElement.style.display = 'none';
-            }
-        labelElement.innerHTML = key;
-        labelElement.setAttribute('for', key);
-
-        divElement.appendChild(inputElement);
-        divElement.appendChild(labelElement);
-        formElement.appendChild(divElement);
+        formElement.innerHTML += 
+        "<div class=  \""+jsonObj[key].type+"\" >" +
+        "<input name= \""+key+"\"  id = \""+key+"\"  type=\""+jsonObj[key].type+"\" placeholder = \"your "+key+"\" value=\""+jsonObj[key].value+"\"/>" +
+        "<label for= \""+key+"\">"+key+"</label></div>";
     }
+
     mybody.appendChild(formElement);  
+        var form = document.getElementById( "Form" );
+        form.addEventListener( "submit", function( e ) {
+            e.preventDefault();
+            var json = submition();
+        }, false);
 }
 
-request.send();
-
-
-
-
-
-// var xhr = new XMLHttpRequest();
-// var url = "https://levelup-assessment-backend-ddmwdsdlta.now.sh/api/getFormSchema?data=" + encodeURIComponent(JSON.stringify({}));;
-// xhr.open("GET", url, true);
-// xhr.setRequestHeader("Content-Type", "application/json");
-// xhr.onreadystatechange = function () {
-//     if (xhr.readyState === 4 && xhr.status === 200) {
-//         var json = JSON.parse(xhr.responseText);
-//         console.log(json);
-//         console.log(json.key.type + ", " + json.key.type);
-        
-//     }
-// };
-// xhr.send();
